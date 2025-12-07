@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Celebration - Aarohi</title>
+    <link rel="shortcut icon" href="./icon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Archivo:ital,wght@0,100..900;1,100..900&family=Bilbo+Swash+Caps&family=Inter:opsz,wght@14..32,500&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Pacifico&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Tiro+Devanagari+Marathi:ital@0;1&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            touch-action: none;
+        }
+
+        body {
+            overflow: hidden;
+            display: flex;
+            font-family: "Pacifico", sans-serif;
+            background: linear-gradient(180deg, #000000, #4a154b, #ff5ccc);
+            perspective: 1000px;
+            transform-style: preserve-3d;
+        }
+
+        #drag-container, #spin-container {
+            position: relative;
+            display: flex;
+            margin: auto;
+            transform-style: preserve-3d;
+            transform: rotateX(-10deg);
+            z-index: 100;
+        }
+
+        #drag-container img, #drag-container video {
+            transform-style: preserve-3d;
+            position: absolute;
+            left: 0;
+            object-fit: cover;
+            width: 90px;
+            height: 130px;
+            background-position: center;
+            background-position-y: 93px;
+            background-size: cover;
+            top: 0;
+            line-height: 200px;
+            font-size: 50px;
+            text-align: center;
+            box-shadow: 0 0 8px #fff;
+            box-reflect: below 10px linear-gradient(transparent, transparent, #0005);
+            border: 3px solid #fff;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            box-shadow: rgba(188, 188, 188, 0) 1px 4px 7px, rgba(204, 204, 204, 0.064) 1px 3px 6px;
+            animation: delayShadow 1s forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes delayShadow {
+            to {
+                box-shadow: rgb(0 0 0 / 0%) 1px 4px 7px, rgb(0 0 0 / 27%) 1px 3px 6px;
+            }
+        }
+
+        #drag-container img:hover, #drag-container video:hover {
+            box-shadow: 0 0 15px #fffd;
+            box-reflect: below 10px linear-gradient(transparent, transparent, #0007);
+            box-shadow: rgba(0, 0, 0, 0.17) 1px 4px 7px, rgba(0, 0, 0, 0.24) 1px 3px 6px;
+        }
+
+        #drag-container p {
+            line-height: 116px;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%,-50%) rotateX(90deg);
+            color: rgb(255 254 254);
+            animation: fadein ease 15s;
+            font-size: 3.5vw;
+            font-weight: 550;
+            text-align: center;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.40);
+        }
+
+        #drag-container p span {
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.40);
+        }
+
+        @keyframes fadein {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .button {
+            height: 121px;
+            padding: 10px 30px;
+            background: url('./images/Message.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 20px;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            position: absolute;
+            top: 13%;
+            left: 24%;
+            opacity: 0;
+            animation: showUp 1s forwards;
+            animation-delay: 5s;
+            transition: all .3s ease-in-out;
+        }
+
+        .button:hover {
+            transform: scale(2.1);
+        }
+
+        @keyframes showUp {
+            to { opacity: 1; }
+        }
+
+        #ground {
+            width: 900px;
+            height: 900px;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translate(-50%,-50%) rotateX(90deg);
+            
+        }
+
+        #music-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        @keyframes spin {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        @keyframes spinRevert {
+            from { transform: rotateY(360deg); }
+            to { transform: rotateY(0deg); }
+        }
+
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background-color: transparent;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        @media screen and (max-width: 658px) {
+            #drag-container p {
+                font-size: 12vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    
+    <div id="drag-container">
+        <div id="spin-container">
+            <img src="./images/r1.jpg" alt="">
+            <img src="./images/r2.jpg" alt="">
+            <img src="./images/r3.jpg" alt="">
+            <img src="./images/r4.jpg" alt="">
+            <img src="./images/r5.jpg" alt="">
+            <img src="./images/r6.jpg" alt="">
+            <img src="./images/r7.jpg" alt="">
+            <img src="./images/r8.jpg" alt="">
+            <img src="./images/r9.jpg" alt="">
+            <img src="./images/r10.jpg" alt="">
+            <p>Happy<span> Birthday</span> Aarohi</p>
+            <button class="button" onclick="playSurprise()"></button>
+        </div>
+        <div id="ground"></div>
+    </div>
+
+    <div id="music-container">
+    <audio id="bg-music" preload="auto">
+        <source src="./music/bg-music.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    </div>
+
+
+    <script src='https://cdn.jsdelivr.net/npm/canvas-confetti@1/dist/confetti.browser.min.js'></script>
+
+    <script>
+        // 3D Carousel Configuration
+        var radius = 210;
+        var autoRotate = true;
+        var rotateSpeed = -60;
+        var imgWidth = 120;
+        var imgHeight = 170;
+
+        setTimeout(init, 1000);
+
+        var odrag = document.getElementById('drag-container');
+        var ospin = document.getElementById('spin-container');
+        var aImg = ospin.getElementsByTagName('img');
+        var aVid = ospin.getElementsByTagName('video');
+        var aEle = [...aImg, ...aVid];
+
+        ospin.style.width = imgWidth + "px";
+        ospin.style.height = imgHeight + "px";
+
+        var ground = document.getElementById('ground');
+        ground.style.width = radius * 3 + "px";
+        ground.style.height = radius * 3 + "px";
+
+        function init(delayTime) {
+            for (var i = 0; i < aEle.length; i++) {
+                aEle[i].style.transform = "rotateY(" + (i * (360 / aEle.length)) + "deg) translateZ(" + radius + "px)";
+                aEle[i].style.transition = "transform 1s";
+                aEle[i].style.transitionDelay = delayTime || (aEle.length - i) / 4 + "s";
+            }
+        }
+
+        function applyTranform(obj) {
+            if(tY > 180) tY = 180;
+            if(tY < 0) tY = 0;
+            obj.style.transform = "rotateX(" + (-tY) + "deg) rotateY(" + (tX) + "deg)";
+        }
+
+        function playSpin(yes) {
+            ospin.style.animationPlayState = (yes?'running':'paused');
+        }
+
+        var sX, sY, nX, nY, desX = 0, desY = 0, tX = 0, tY = 10;
+
+        if (autoRotate) {
+            var animationName = (rotateSpeed > 0 ? 'spin' : 'spinRevert');
+            ospin.style.animation = `${animationName} ${Math.abs(rotateSpeed)}s infinite linear`;
+        }
+
+        document.onpointerdown = function (e) {
+            clearInterval(odrag.timer);
+            e = e || window.event;
+            var sX = e.clientX, sY = e.clientY;
+
+            this.onpointermove = function (e) {
+                e = e || window.event;
+                var nX = e.clientX, nY = e.clientY;
+                desX = nX - sX;
+                desY = nY - sY;
+                tX += desX * 0.1;
+                tY += desY * 0.1;
+                applyTranform(odrag);
+                sX = nX;
+                sY = nY;
+            };
+
+            this.onpointerup = function (e) {
+                odrag.timer = setInterval(function () {
+                    desX *= 0.95;
+                    desY *= 0.95;
+                    tX += desX * 0.1;
+                    tY += desY * 0.1;
+                    applyTranform(odrag);
+                    playSpin(false);
+                    if (Math.abs(desX) < 0.5 && Math.abs(desY) < 0.5) {
+                        clearInterval(odrag.timer);
+                        playSpin(true);
+                    }
+                }, 17);
+                this.onpointermove = this.onpointerup = null;
+            };
+            return false;
+        };
+
+        document.onmousewheel = function(e) {
+            e = e || window.event;
+            var d = e.wheelDelta / 20 || -e.detail;
+            radius += d;
+            init(1);
+        };
+
+        // 3D Realistic Smaller Hearts
+        window.onload = function () {
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            function random(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            const colors = [
+                "#ff9a9e",
+                "#fecfef",
+                "#fbc2eb",
+                "#a18cd1",
+                "#f6d365",
+                "#ffecd2"
+            ];
+
+            function Heart() {
+                this.reset(true);
+            }
+
+            Heart.prototype.reset = function (first) {
+                if (first) {
+                    this.x = random(0, canvas.width);
+                    this.y = random(0, canvas.height);
+                } else {
+                    const side = Math.floor(random(0, 4));
+                    if (side === 0) { // top
+                        this.x = random(0, canvas.width);
+                        this.y = -20;
+                    } else if (side === 1) { // bottom
+                        this.x = random(0, canvas.width);
+                        this.y = canvas.height + 20;
+                    } else if (side === 2) { // left
+                        this.x = -20;
+                        this.y = random(0, canvas.height);
+                    } else { // right
+                        this.x = canvas.width + 20;
+                        this.y = random(0, canvas.height);
+                    }
+                }
+
+                // Thoda chota size (6-16px) for subtle effect
+                this.size = random(6, 16);
+                this.color = colors[Math.floor(random(0, colors.length))];
+
+                // 3D realistic movement with depth
+                const speed = random(0.2, 0.8);
+                const angle = random(0, Math.PI * 2);
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.vz = random(-0.5, 0.5); // Z-depth movement
+
+                this.opacity = random(0.7, 1.0);
+                this.life = random(400, 800);
+                this.rotation = random(0, Math.PI * 2); // 3D rotation
+                this.rotSpeed = random(-0.02, 0.02);
+            };
+
+            Heart.prototype.draw = function () {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation);
+                
+                // 3D perspective effect
+                const scale = 0.7 + (this.vz + 0.5) * 0.3;
+                ctx.scale(scale, scale);
+                
+                ctx.beginPath();
+                const s = this.size;
+
+                // More realistic heart shape
+                ctx.moveTo(0, -s / 3);
+                ctx.bezierCurveTo(-s / 2, -s / 2, -s, 0, 0, s * 0.8);
+                ctx.bezierCurveTo(s, 0, s / 2, -s / 2, 0, -s / 3);
+
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity * (1 + this.vz * 0.3);
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 8;
+                ctx.shadowOffsetY = 2;
+                ctx.fill();
+                
+                ctx.restore();
+            };
+
+            Heart.prototype.update = function () {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.rotation += this.rotSpeed;
+                this.vz += (0 - this.vz) * 0.02; // Gentle Z bounce
+                this.life--;
+
+                if (
+                    this.x < -50 || this.x > canvas.width + 50 ||
+                    this.y < -50 || this.y > canvas.height + 50 ||
+                    this.life <= 0
+                ) {
+                    this.reset(false);
+                }
+            };
+
+            const hearts = [];
+            const HEART_COUNT = 80; // Thoda kam hearts for better performance
+
+            for (let i = 0; i < HEART_COUNT; i++) {
+                hearts.push(new Heart());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                hearts.forEach((heart) => {
+                    heart.update();
+                    heart.draw();
+                });
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+
+            window.addEventListener("resize", function () {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        };
+
+        // Surprise: confetti + music on button click
+        function playSurprise() {
+            confetti({
+                particleCount: 350,
+                spread: 90,
+                origin: { y: 0.6 }
+            });
+
+            var audio = document.getElementById("bg-music");
+            audio.currentTime = 0;
+            audio.play();
+        }
+    </script>
+</body>
+</html>

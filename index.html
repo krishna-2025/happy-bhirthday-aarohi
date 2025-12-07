@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Birthday - Aarohi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --pink-light: #ffe1f0;
+      --pink-mid: #ffb3d6;
+      --pink-deep: #ff4f9a;
+      --purple: #7b4bff;
+      --bg-gradient: linear-gradient(to bottom, #ffe8f4 0%, #ff9cc9 55%, #ff6aa9 100%);
+      --card-bg: #ffffff;
+      --dark-card: rgba(14, 0, 24, 0.84);
+      --text-main: #27152e;
+      --text-soft: #6c4e72;
+      --shadow-soft: 0 20px 45px rgba(255, 53, 131, 0.35);
+      --radius-card: 18px;
+      --transition-fast: 0.25s ease;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      color: var(--text-main);
+    }
+
+    /* cute hello-kitty style pattern overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(255,255,255,0.16) 0, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255,255,255,0.18) 0, transparent 55%),
+        url("./images/r.jpg");
+      background-size: auto, auto, 220px;
+      opacity: 0.35;
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #app {
+      position: relative;
+      z-index: 1;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      padding: 20px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .card-main {
+      background: rgba(255, 255, 255, 0.78);
+      border-radius: 26px;
+      padding: 26px 24px;
+      box-shadow:
+        0 22px 55px rgba(255, 70, 145, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(18px);
+      width: min(540px, 100%);
+      margin: 0 auto;
+    }
+
+    .card-popup {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 26px 24px;
+      box-shadow:
+        0 18px 40px rgba(77, 5, 68, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.8);
+      width: min(430px, 100%);
+      margin: 0 auto;
+    }
+
+    .mini-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 8px 22px rgba(255, 134, 186, 0.6);
+      margin-bottom: 10px;
+    }
+
+    .mini-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff4f9a, #ffcf52);
+      box-shadow: 0 0 12px rgba(255, 79, 154, 0.7);
+    }
+
+    h1.title {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+    }
+
+    .gift-img {
+      width: 160px;
+      height: 160px;
+      display: block;
+      margin: 10px auto 16px;
+      border-radius: 32px;
+      background: radial-gradient(circle at 30% 20%, #ffe4f4, #ff6aa9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gift-img::before {
+      content: "🎁";
+      font-size: 4.8rem;
+      transform: translateY(4px);
+    }
+
+    .text-small {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+    }
+
+    .tap-text {
+      margin-top: 12px;
+      font-weight: 600;
+      color: #17111f;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      border-radius: 999px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 10px 24px;
+      cursor: pointer;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff4f9a, #ffcf52);
+      color: #fff;
+      box-shadow: var(--shadow-soft);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 26px 55px rgba(255, 73, 145, 0.5);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      color: #ff326d;
+      font-weight: 600;
+    }
+
+    .btn-secondary:hover {
+      background: #ffe1f0;
+    }
+
+    .input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      font-size: 0.92rem;
+      margin: 10px 0 16px;
+      outline: none;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+    }
+
+    .input:focus {
+      border-color: #ff4f9a;
+      box-shadow: 0 0 0 3px rgba(255, 79, 154, 0.18);
+      background: #fff7fb;
+    }
+
+    .avatar-wrapper {
+      margin-bottom: 16px;
+    }
+
+    .avatar-circle {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      background: radial-gradient(circle at 30% 20%, #fff5fd, #ff96c6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 18px 45px rgba(255, 73, 155, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .avatar-circle::before {
+      content: "🐱";
+      font-size: 4.2rem;
+      transform: translateY(2px);
+    }
+
+    .avatar-circle.alt::before {
+      content: "🐼";
+    }
+
+    .avatar-circle.alt2::before {
+      content: "🧸";
+    }
+
+    .avatar-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .dark-panel {
+      background: var(--dark-card);
+      border-radius: var(--radius-card);
+      padding: 18px 18px 16px;
+      margin-top: 12px;
+      box-shadow: 0 18px 35px rgba(3, 0, 11, 0.75);
+      color: #fbe9ff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dark-panel::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 0 0, rgba(255, 105, 200, 0.22) 0, transparent 55%),
+                  radial-gradient(circle at 100% 100%, rgba(160, 105, 255, 0.24) 0, transparent 50%);
+      opacity: 0.75;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .dark-panel-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+      font-size: 0.86rem;
+    }
+
+    .dark-heart {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff4f9a, #ffc85d);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      box-shadow: 0 0 18px rgba(255, 113, 181, 0.8);
+    }
+
+    .dark-text {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      text-align: left;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tap-to-continue {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      opacity: 0.85;
+      text-align: right;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+
+    .btn-long {
+      width: 100%;
+      justify-content: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-danger {
+      background: #ff326d;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #ff154f;
+      box-shadow: 0 20px 40px rgba(255, 49, 109, 0.55);
+    }
+
+    .choice-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    .choice-sub {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      margin-bottom: 12px;
+    }
+
+    .progress-bar {
+      margin-top: 16px;
+      height: 6px;
+      border-radius: 999px;
+      background: #e3f2ff;
+      overflow: hidden;
+    }
+
+    .progress-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #38b6ff, #ff4f9a);
+      border-radius: inherit;
+      animation: loadBar 3.2s forwards;
+    }
+
+    @keyframes loadBar {
+      from { width: 0%; }
+      to   { width: 100%; }
+    }
+
+    .new-page-screen {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+      padding: 0;
+      background: transparent;
+    }
+
+    .new-page-content {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      #app {
+        height: 100vh;
+        padding: 16px;
+      }
+
+      .card-main,
+      .card-popup {
+        padding: 20px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- SCREEN 1: Open Gift -->
+    <section id="screen1" class="screen active">
+      <div class="card-main">
+        <div class="mini-chip">
+          <span class="mini-dot"></span>
+          <span>Birthday Surprise</span>
+        </div>
+        <div class="gift-img"></div>
+        <h1 class="title">Open the gift, cutie 🥳</h1>
+        <p class="text-small">
+          There's a tiny bit of birthday magic hiding inside this page.
+          Tap below to unwrap it. 🎀
+        </p>
+        <div style="margin-top: 16px;">
+          <button class="btn btn-primary" id="btnOpenGift">
+            Open the gift ✨
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: Name Input -->
+    <section id="screen2" class="screen">
+      <div class="card-popup">
+        <h1 class="title" style="font-size: 1.3rem; margin-bottom: 6px;">
+          What's your beautiful name?
+        </h1>
+        <p class="text-small">
+          We need it to make this birthday wish perfectly yours. 💖
+        </p>
+        <input
+          type="text"
+          id="nameInput"
+          class="input"
+          placeholder="Type your name here..."
+        />
+        <button class="btn btn-primary btn-long" id="btnSaveName">
+          OK
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: First Greeting -->
+    <section id="screen3" class="screen">
+      <div class="card-main">
+        <div class="avatar-wrapper">
+          <div class="avatar-circle"></div>
+          <div class="avatar-name">
+            Happy Birthday, <span class="name-target">Aarohi</span>!
+          </div>
+        </div>
+
+        <div class="dark-panel" id="panelGreeting">
+          <div class="dark-panel-header">
+            <div class="dark-heart">❤</div>
+            <span>Birthday Message</span>
+          </div>
+          <div class="dark-text">
+            Happy Birthday, gorgeous! Today is all about celebrating
+            <strong>you</strong> — your smile, your heart and every little thing
+            that makes you so special. 💫
+            <div class="tap-to-continue">
+              Tap to continue the celebration ⟶
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: Surprise teaser -->
+    <section id="screen4" class="screen">
+      <div class="card-main">
+        <div class="avatar-wrapper">
+          <div class="avatar-circle"></div>
+          <div class="avatar-name">
+            Happy Birthday, <span class="name-target">Aarohi</span>!
+          </div>
+        </div>
+
+        <div class="dark-panel" id="panelTeaser">
+          <div class="dark-panel-header">
+            <div class="dark-heart">💕</div>
+            <span>Ready for more?</span>
+          </div>
+          <div class="dark-text" style="text-align:center;">
+            Tap here for your birthday surprise! 🎉<br /><br />
+            <span style="font-size:1.3rem;">🎁 🥳 💗</span>
+            <div class="tap-to-continue" style="text-align:center; margin-top:8px;">
+              (Tap anywhere on this box)
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: Long message -->
+    <section id="screen5" class="screen">
+      <div class="card-main">
+        <div class="avatar-wrapper">
+          <div class="avatar-circle alt"></div>
+          <div class="avatar-name">
+            Happy Birthday, <span class="name-target">Aarohi</span>!
+          </div>
+        </div>
+
+        <div class="dark-panel">
+          <div class="dark-panel-header">
+            <div class="dark-heart">✦</div>
+            <span>Do you know what makes today extra special?</span>
+          </div>
+          <div class="dark-text">
+            It's <strong>your</strong> birthday! 🎂<br /><br />
+            Today, I wish you a year filled with laughter, love, soft hugs,
+            late-night talks and unforgettable moments.  
+            May every dream that quietly lives in your heart start moving
+            closer to you, one little step at a time. 🫶<br /><br />
+            Remember, you deserve every happiness in the world.  
+            Celebrate big, live loudly and soak in all the love that's
+            wrapped around you today.
+          </div>
+        </div>
+
+        <div style="margin-top: 18px; text-align:center;">
+          <button class="btn btn-primary" id="btnNextChoice">
+            Next ⟶
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 6: Choice popup -->
+    <section id="screen6" class="screen">
+      <div class="card-popup">
+        <div class="avatar-circle alt2" style="width:90px;height:90px;box-shadow:none;margin-bottom:4px;"></div>
+        <div class="choice-title">
+          <span class="name-target">Aarohi</span>, how about we celebrate
+          your birthday in style?
+        </div>
+        <p class="choice-sub">
+          Your choice is:
+        </p>
+        <div class="btn-row">
+          <button class="btn btn-primary btn-long" id="btnCelebrate">
+            Absolutely, let's celebrate! 🎉
+          </button>
+          <button class="btn btn-danger btn-long" id="btnLater">
+            Maybe another time
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 7: Can't skip -->
+    <section id="screen7" class="screen">
+      <div class="card-popup">
+        <div class="avatar-circle alt" style="width:90px;height:90px;box-shadow:none;margin-bottom:6px;"></div>
+        <p class="choice-title">
+          Oops! You can't skip this birthday magic. ✨
+        </p>
+        <p class="choice-sub">
+          Sit tight for a second while we load something special just for you…
+        </p>
+        <div class="progress-bar">
+          <div class="progress-inner"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 8: NEW PAGE - FULL SCREEN 3D.html -->
+    <section id="screen8" class="screen new-page-screen">
+      <iframe 
+        src="3D.html"
+        class="new-page-content"
+        title="Birthday Surprise"
+        frameborder="0"
+        allowfullscreen
+        style="width: 100vw; height: 100vh;"
+      ></iframe>
+    </section>
+  </div>
+
+  <script>
+    const screens = document.querySelectorAll(".screen");
+    let userName = "";
+
+    const nameTargets = document.querySelectorAll(".name-target");
+
+    function showScreen(id) {
+      screens.forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    // buttons
+    document.getElementById("btnOpenGift").addEventListener("click", () => {
+      showScreen("screen2");
+    });
+
+    document.getElementById("btnSaveName").addEventListener("click", () => {
+      const input = document.getElementById("nameInput");
+      const value = input.value.trim();
+      if (!value) {
+        alert("Pehle apna beautiful name likho 😊");
+        input.focus();
+        return;
+      }
+      userName = value;
+      nameTargets.forEach(el => (el.textContent = userName));
+      showScreen("screen3");
+    });
+
+    document.getElementById("panelGreeting").addEventListener("click", () => {
+      showScreen("screen4");
+    });
+
+    document.getElementById("panelTeaser").addEventListener("click", () => {
+      showScreen("screen5");
+    });
+
+    document.getElementById("btnNextChoice").addEventListener("click", () => {
+      showScreen("screen6");
+    });
+
+    document.getElementById("btnCelebrate").addEventListener("click", () => {
+      showScreen("screen8");
+    });
+
+    document.getElementById("btnLater").addEventListener("click", () => {
+      showScreen("screen7");
+      // after progress, go to new page automatically
+      setTimeout(() => {
+        showScreen("screen8");
+      }, 3200);
+    });
+  </script>
+</body>
+</html>
